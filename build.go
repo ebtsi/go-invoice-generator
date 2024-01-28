@@ -214,48 +214,6 @@ func (doc *Document) drawsTableTitles() {
 		0,
 		"",
 	)
-
-	// Tax
-	doc.pdf.SetX(ItemColTaxOffset)
-	doc.pdf.CellFormat(
-		ItemColDiscountOffset-ItemColTaxOffset,
-		6,
-		doc.encodeString(doc.Options.TextItemsTaxTitle),
-		"0",
-		0,
-		"",
-		false,
-		0,
-		"",
-	)
-
-	// Discount
-	doc.pdf.SetX(ItemColDiscountOffset)
-	doc.pdf.CellFormat(
-		ItemColTotalTTCOffset-ItemColDiscountOffset,
-		6,
-		doc.encodeString(doc.Options.TextItemsDiscountTitle),
-		"0",
-		0,
-		"",
-		false,
-		0,
-		"",
-	)
-
-	// TOTAL TTC
-	doc.pdf.SetX(ItemColTotalTTCOffset)
-	doc.pdf.CellFormat(
-		190-ItemColTotalTTCOffset,
-		6,
-		doc.encodeString(doc.Options.TextItemsTotalTTCTitle),
-		"0",
-		0,
-		"",
-		false,
-		0,
-		"",
-	)
 }
 
 // appendItems to document
