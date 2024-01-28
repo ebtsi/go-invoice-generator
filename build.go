@@ -1,12 +1,10 @@
 package generator
 
 import (
-	"bytes"
 	"fmt"
 	"time"
 
 	"github.com/go-pdf/fpdf"
-	"github.com/shopspring/decimal"
 )
 
 // Build pdf document from data provided
