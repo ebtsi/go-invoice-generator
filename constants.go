@@ -29,10 +29,10 @@ const (
 	ItemColNameOffset float64 = 10
 
 	// ItemColUnitPriceOffset ...
-	ItemColUnitPriceOffset float64 = 110
+	ItemColUnitPriceOffset float64 = 120
 
 	// ItemColQuantityOffset ...
-	ItemColQuantityOffset float64 = 150
+	ItemColQuantityOffset float64 = 165
 
 	// ItemColTotalHTOffset ...
 	ItemColTotalHTOffset float64 = 175
