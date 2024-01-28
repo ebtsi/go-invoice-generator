@@ -30,6 +30,7 @@ type Document struct {
 
 	CustomTotal string
 	CustomTax string
+	CustomTaxRate string
 	CustomSubtotal string
 }
 
