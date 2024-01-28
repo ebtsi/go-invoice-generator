@@ -282,7 +282,7 @@ func (doc *Document) appendTotal() {
 	doc.pdf.SetX(120)
 	doc.pdf.SetFillColor(doc.Options.DarkBgColor[0], doc.Options.DarkBgColor[1], doc.Options.DarkBgColor[2])
 	doc.pdf.Rect(120, doc.pdf.GetY(), 40, 10, "F")
-	doc.pdf.CellFormat(38, 10, doc.encodeString(doc.Options.TextTotalTotal), "0", 0, "R", false, 0, "")
+	doc.pdf.CellFormat(38, 10, doc.encodeString("SUBTOTAL"), "0", 0, "R", false, 0, "")
 
 	// Draw TOTAL HT amount
 	doc.pdf.SetX(162)
@@ -291,7 +291,7 @@ func (doc *Document) appendTotal() {
 	doc.pdf.CellFormat(
 		40,
 		10,
-		doc.encodeString(doc.ac.FormatMoneyDecimal(doc.TotalWithoutTaxAndWithoutDocumentDiscount())),
+		doc.encodeString(doc.CustomSubtotal),
 		"0",
 		0,
 		"L",
@@ -300,80 +300,13 @@ func (doc *Document) appendTotal() {
 		"",
 	)
 
-	if doc.Discount != nil {
-		baseY := doc.pdf.GetY() + 10
-
-		// Draw discounted title
-		doc.pdf.SetXY(120, baseY)
-		doc.pdf.SetFillColor(doc.Options.DarkBgColor[0], doc.Options.DarkBgColor[1], doc.Options.DarkBgColor[2])
-		doc.pdf.Rect(120, doc.pdf.GetY(), 40, 15, "F")
-
-		// title
-		doc.pdf.CellFormat(38, 7.5, doc.encodeString(doc.Options.TextTotalDiscounted), "0", 0, "BR", false, 0, "")
-
-		// description
-		doc.pdf.SetXY(120, baseY+7.5)
-		doc.pdf.SetFont(doc.Options.Font, "", BaseTextFontSize)
-		doc.pdf.SetTextColor(
-			doc.Options.GreyTextColor[0],
-			doc.Options.GreyTextColor[1],
-			doc.Options.GreyTextColor[2],
-		)
-
-		var descString bytes.Buffer
-		discountType, discountAmount := doc.Discount.getDiscount()
-		if discountType == DiscountTypePercent {
-			descString.WriteString("-")
-			descString.WriteString(discountAmount.String())
-			descString.WriteString(" % / -")
-			descString.WriteString(doc.ac.FormatMoneyDecimal(
-				doc.TotalWithoutTaxAndWithoutDocumentDiscount().Sub(doc.TotalWithoutTax())),
-			)
-		} else {
-			descString.WriteString("-")
-			descString.WriteString(doc.ac.FormatMoneyDecimal(discountAmount))
-			descString.WriteString(" / -")
-			descString.WriteString(
-				discountAmount.Mul(decimal.NewFromFloat(100)).Div(doc.TotalWithoutTaxAndWithoutDocumentDiscount()).StringFixed(2),
-			)
-			descString.WriteString(" %")
-		}
-
-		doc.pdf.CellFormat(38, 7.5, doc.encodeString(descString.String()), "0", 0, "TR", false, 0, "")
-
-		doc.pdf.SetFont(doc.Options.Font, "", LargeTextFontSize)
-		doc.pdf.SetTextColor(
-			doc.Options.BaseTextColor[0],
-			doc.Options.BaseTextColor[1],
-			doc.Options.BaseTextColor[2],
-		)
-
-		// Draw discount amount
-		doc.pdf.SetY(baseY)
-		doc.pdf.SetX(162)
-		doc.pdf.SetFillColor(doc.Options.GreyBgColor[0], doc.Options.GreyBgColor[1], doc.Options.GreyBgColor[2])
-		doc.pdf.Rect(160, doc.pdf.GetY(), 40, 15, "F")
-		doc.pdf.CellFormat(
-			40,
-			15,
-			doc.encodeString(doc.ac.FormatMoneyDecimal(doc.TotalWithoutTax())),
-			"0",
-			0,
-			"L",
-			false,
-			0,
-			"",
-		)
-		doc.pdf.SetY(doc.pdf.GetY() + 15)
-	} else {
-		doc.pdf.SetY(doc.pdf.GetY() + 10)
-	}
+	doc.pdf.SetY(doc.pdf.GetY() + 10)
 
 	// Draw tax title
 	doc.pdf.SetX(120)
 	doc.pdf.SetFillColor(doc.Options.DarkBgColor[0], doc.Options.DarkBgColor[1], doc.Options.DarkBgColor[2])
 	doc.pdf.Rect(120, doc.pdf.GetY(), 40, 10, "F")
-	doc.pdf.CellFormat(38, 10, doc.encodeString(doc.Options.TextTotalTax), "0", 0, "R", false, 0, "")
+	doc.pdf.CellFormat(38, 10, doc.encodeString("TAX"), "0", 0, "R", false, 0, "")
 
 	// Draw tax amount
 	doc.pdf.SetX(162)
@@ -382,7 +315,7 @@ func (doc *Document) appendTotal() {
 	doc.pdf.CellFormat(
 		40,
 		10,
-		doc.encodeString(doc.ac.FormatMoneyDecimal(doc.Tax())),
+		doc.encodeString(doc.CustomTax),
 		"0",
 		0,
 		"L",
@@ -396,7 +329,7 @@ func (doc *Document) appendTotal() {
 	doc.pdf.SetX(120)
 	doc.pdf.SetFillColor(doc.Options.DarkBgColor[0], doc.Options.DarkBgColor[1], doc.Options.DarkBgColor[2])
 	doc.pdf.Rect(120, doc.pdf.GetY(), 40, 10, "F")
-	doc.pdf.CellFormat(38, 10, doc.encodeString(doc.Options.TextTotalWithTax), "0", 0, "R", false, 0, "")
+	doc.pdf.CellFormat(38, 10, doc.encodeString("TOTAL"), "0", 0, "R", false, 0, "")
 
 	// Draw total with tax amount
 	doc.pdf.SetX(162)
@@ -405,7 +338,7 @@ func (doc *Document) appendTotal() {
 	doc.pdf.CellFormat(
 		40,
 		10,
-		doc.encodeString(doc.ac.FormatMoneyDecimal(doc.TotalWithTax())),
+		doc.encodeString(doc.CustomTotal),
 		"0",
 		0,
 		"L",
