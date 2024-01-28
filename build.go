@@ -304,7 +304,7 @@ func (doc *Document) appendTotal() {
 	doc.pdf.SetX(120)
 	doc.pdf.SetFillColor(doc.Options.DarkBgColor[0], doc.Options.DarkBgColor[1], doc.Options.DarkBgColor[2])
 	doc.pdf.Rect(120, doc.pdf.GetY(), 40, 10, "F")
-	doc.pdf.CellFormat(38, 10, doc.encodeString("TAX"), "0", 0, "R", false, 0, "")
+	doc.pdf.CellFormat(38, 10, doc.encodeString("TAX (" + doc.CustomTaxRate + ")"), "0", 0, "R", false, 0, "")
 
 	// Draw tax amount
 	doc.pdf.SetX(162)
