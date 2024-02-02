@@ -12,6 +12,7 @@ type Item struct {
 	Quantity    string    `json:"quantity,omitempty"`
 	Tax         *Tax      `json:"tax,omitempty"`
 	Discount    *Discount `json:"discount,omitempty"`
+	Total       string    `json:"total,omitempty"`
 
 	_unitCost decimal.Decimal
 	_quantity decimal.Decimal
@@ -188,7 +189,7 @@ func (i *Item) appendColTo(options *Options, doc *Document) {
 	doc.pdf.CellFormat(
 		ItemColTaxOffset-ItemColTotalHTOffset,
 		colHeight,
-		doc.encodeString(doc.ac.FormatMoneyDecimal(i.TotalWithoutTaxAndWithoutDiscount())),
+		doc.encodeString(i.Total),
 		"0",
 		0,
 		"",
