@@ -51,61 +51,6 @@ func (i *Item) Prepare() error {
 	return nil
 }
 
-// TotalWithoutTaxAndWithoutDiscount returns the total without tax and without discount
-func (i *Item) TotalWithoutTaxAndWithoutDiscount() decimal.Decimal {
-	//quantity, _ := decimal.NewFromString(i.Quantity)
-	price, _ := decimal.NewFromString(i.UnitCost)
-	total := price.Mul(1.0)
-
-	return total
-}
-
-// TotalWithoutTaxAndWithDiscount returns the total without tax and with discount
-func (i *Item) TotalWithoutTaxAndWithDiscount() decimal.Decimal {
-	total := i.TotalWithoutTaxAndWithoutDiscount()
-
-	// Check discount
-	if i.Discount != nil {
-		dType, dNum := i.Discount.getDiscount()
-
-		if dType == DiscountTypeAmount {
-			total = total.Sub(dNum)
-		} else {
-			// Percent
-			toSub := total.Mul(dNum.Div(decimal.NewFromFloat(100)))
-			total = total.Sub(toSub)
-		}
-	}
-
-	return total
-}
-
-// TotalWithTaxAndDiscount returns the total with tax and discount
-func (i *Item) TotalWithTaxAndDiscount() decimal.Decimal {
-	return i.TotalWithoutTaxAndWithDiscount().Add(i.TaxWithTotalDiscounted())
-}
-
-// TaxWithTotalDiscounted returns the tax with total discounted
-func (i *Item) TaxWithTotalDiscounted() decimal.Decimal {
-	result := decimal.NewFromFloat(0)
-
-	if i.Tax == nil {
-		return result
-	}
-
-	totalHT := i.TotalWithoutTaxAndWithDiscount()
-	taxType, taxAmount := i.Tax.getTax()
-
-	if taxType == TaxTypeAmount {
-		result = taxAmount
-	} else {
-		divider := decimal.NewFromFloat(100)
-		result = totalHT.Mul(taxAmount.Div(divider))
-	}
-
-	return result
-}
-
 // appendColTo document doc
 func (i *Item) appendColTo(options *Options, doc *Document) {
 	// Get base Y (top of line)
@@ -161,7 +106,7 @@ func (i *Item) appendColTo(options *Options, doc *Document) {
 	doc.pdf.CellFormat(
 		ItemColQuantityOffset-ItemColUnitPriceOffset,
 		colHeight,
-		doc.encodeString(doc.ac.FormatMoneyDecimal(i._unitCost)),
+		doc.encodeString(i.UnitCost),
 		"0",
 		0,
 		"",
