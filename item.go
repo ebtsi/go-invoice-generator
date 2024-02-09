@@ -175,7 +175,7 @@ func (i *Item) appendColTo(options *Options, doc *Document) {
 	doc.pdf.CellFormat(
 		ItemColTaxOffset-ItemColQuantityOffset,
 		colHeight,
-		doc.encodeString(i._quantity.String()),
+		doc.encodeString(i.Quantity),
 		"0",
 		0,
 		"",
