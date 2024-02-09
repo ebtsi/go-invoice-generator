@@ -28,11 +28,11 @@ func (i *Item) Prepare() error {
 	i._unitCost = unitCost
 
 	// Quantity
-	quantity, err := decimal.NewFromString(i.Quantity)
-	if err != nil {
-		return err
-	}
-	i._quantity = quantity
+	//quantity, err := decimal.NewFromString(i.Quantity)
+	//if err != nil {
+	//	return err
+	//}
+	//i._quantity = quantity
 
 	// Tax
 	if i.Tax != nil {
@@ -53,9 +53,9 @@ func (i *Item) Prepare() error {
 
 // TotalWithoutTaxAndWithoutDiscount returns the total without tax and without discount
 func (i *Item) TotalWithoutTaxAndWithoutDiscount() decimal.Decimal {
-	quantity, _ := decimal.NewFromString(i.Quantity)
+	//quantity, _ := decimal.NewFromString(i.Quantity)
 	price, _ := decimal.NewFromString(i.UnitCost)
-	total := price.Mul(quantity)
+	total := price.Mul(1)
 
 	return total
 }
